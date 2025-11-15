@@ -297,7 +297,7 @@ function treeToGraph(root) {
 
     sortedChildren.forEach((child) => {
       const childDepth = depth + child.label.length;
-      const childPathLabel = (pathLabel || '') + child.label;
+      const childPathLabel = pathLabel + child.label;
       const childInfo = traverse(child.node, childDepth, childPathLabel);
       childXs.push(childInfo.position.x);
       leafCount += childInfo.leafCount;
@@ -308,7 +308,9 @@ function treeToGraph(root) {
           target: childInfo.id,
           label: child.label,
           edgeString: child.label,
-          edgeLength: child.label.length
+          edgeLength: child.label.length,
+          parentPath: pathLabel,
+          fullString: childPathLabel
         },
         classes: 'suffix-edge',
         selectable: false
@@ -325,13 +327,12 @@ function treeToGraph(root) {
       x = leafCounter * HORIZONTAL_GAP;
     }
 
-    const nodeLabel = pathLabel && pathLabel.length ? pathLabel : 'root';
     const nodeEntry = {
       data: {
         id: nodeId,
         label: isLeaf ? String(depth) : '',
         depth,
-        pathLabel: nodeLabel,
+        pathLabel,
         leafCount
       },
       position: { x, y: depth * DEPTH_SCALE },
@@ -618,7 +619,7 @@ function formatNodeTooltipContent(data) {
     '<div class="tooltip-title">Node</div>',
     `<div>Depth: <strong>${data.depth}</strong></div>`
   ];
-  if (label && label !== 'root') {
+  if (label) {
     parts.push(`<div>Label: <code>${escapeHtml(label)}</code></div>`);
   }
   parts.push(`<div>Count: <strong>${data.leafCount}</strong></div>`);
@@ -626,10 +627,16 @@ function formatNodeTooltipContent(data) {
 }
 
 function formatEdgeTooltipContent(data) {
-  const label = data.edgeString || '';
+  const parentPath = data.parentPath || '';
+  const edgeLabel = data.edgeString || '';
+  const parentMarkup = parentPath
+    ? `<span class="tooltip-parent">${escapeHtml(parentPath)}</span>`
+    : '';
+  const edgeMarkup = `<span class="tooltip-edge">${escapeHtml(edgeLabel)}</span>`;
+  const combined = parentMarkup + edgeMarkup;
   return `
     <div class="tooltip-title">Edge</div>
-    <div>String: <code>${escapeHtml(label)}</code></div>
+    <div>String: ${combined}</div>
     <div>Length: <strong>${data.edgeLength}</strong></div>
   `;
 }

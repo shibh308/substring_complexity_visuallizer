@@ -194,6 +194,16 @@ tbody tr.best-row td {
   color: #fbbf24;
 }
 
+#graph-tooltip .tooltip-parent {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+#graph-tooltip .tooltip-edge {
+  color: #fb923c;
+  font-weight: 600;
+}
+
 @media (min-width: 900px) {
   main {
     flex-direction: row;
