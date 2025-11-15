@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Substring Complexity Visualizer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/cytoscape@3.27.0/dist/cytoscape.min.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Substring Complexity Visualizer</h1>
+    </header>
+    <main>
+      <section class="controls">
+        <label for="source-text">Input text</label>
+        <input
+          id="source-text"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="e.g. banana$"
+          value="banana$"
+        />
+        <p id="status" aria-live="polite">Waiting for input…</p>
+        <p id="complexity-summary">
+          substring complexity: <span id="complexity-value">-</span>
+        </p>
+        <div class="metrics">
+          <div class="metrics-chart">
+            <h2>Substring Complexity Graph</h2>
+            <svg
+              id="complexity-chart"
+              viewBox="0 0 520 260"
+              preserveAspectRatio="none"
+              role="img"
+              aria-label="substring complexity chart"
+            ></svg>
+          </div>
+          <div class="metrics-table">
+            <h2>S(k) by substring length</h2>
+            <table id="substring-table">
+              <thead>
+                <tr>
+                  <th>k</th>
+                  <th>S(k)</th>
+                  <th>S(k) / k</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section class="canvas">
+        <div id="cy" role="img" aria-label="Suffix tree graph"></div>
+      </section>
+    </main>
+    <div id="graph-tooltip" role="status" aria-live="polite"></div>
+  </body>
+</html>
